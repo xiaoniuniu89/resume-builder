@@ -61,6 +61,8 @@ INSTALLED_APPS = [
     'crispy_forms',
     'dashboard',
     'resume_builder',
+    'phone_field',
+    'django_countries',
     
 ]
 
