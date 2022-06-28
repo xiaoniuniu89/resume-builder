@@ -1,6 +1,7 @@
 from django.urls import path
 from .views import (
     GenerateResume,
+    generate_cv
 )
 
 urlpatterns = [

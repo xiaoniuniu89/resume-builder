@@ -1,0 +1,147 @@
+{% load static %}
+<!DOCTYPE html PUBLIC "-W3CDTD XHTML 1.0 StrictEN"
+"http:www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http:www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+     
+
+     <title>One Page Resume</title>
+
+     <style type="text/css">
+        * { margin: 0; padding: 0; }
+        body { font: 16px Helvetica, Sans-Serif; line-height: 24px; }
+        .clear { clear: both; }
+        #page-wrap { width: 800px; margin: 40px auto 60px; }
+        #pic { float: right; margin: -30px 0 0 0; }
+        h1 { margin: 0 0 16px 0; padding: 0 0 16px 0; font-size: 42px; font-weight: bold; letter-spacing: -2px; border-bottom: 1px solid #999; }
+        h2 { font-size: 20px; margin: 0 0 6px 0; position: relative; }
+        h2 span { position: absolute; bottom: 0; right: 0; font-style: italic; font-family: Georgia, Serif; font-size: 16px; color: #999; font-weight: normal; }
+        p { margin: 0 0 16px 0; }
+        a { color: #999; text-decoration: none; border-bottom: 1px dotted #999; }
+        a:hover { border-bottom-style: solid; color: black; }
+        ul { margin: 0 0 32px 17px; }
+        #objective { width: 500px; float: left; }
+        #objective p { font-family: Georgia, Serif; font-style: italic; color: #666; }
+        dt { font-style: italic; font-weight: bold; font-size: 18px; text-align: right; padding: 0 26px 0 0; width: 150px; float: left; height: 100px; border-right: 1px solid #999;  }
+        dd { width: 600px; float: right; }
+        dd.clear { float: none; margin: 0; height: 15px; }
+     </style>
+
+     <script src="https://code.jquery.com/jquery-1.12.3.min.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js" integrity="sha512-YcsIPGdhPK4P/uRW6/sruonlYj+Q7UHWeKfTAkBW+g83NKM+jMJFJ4iAPfSnVp7BKD4dKMHmVSvICUbE/V1sSw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+     
+</head>
+
+<body id='content-to-print'>
+
+    <div id="page-wrap">
+    
+        <div id="contact-info" class="vcard">
+        
+            <!-- Microformats! -->
+        
+            <h1 class="fn">{{resume.get_contact.first_name}} {{resume.get_contact.last_name}}</h1>
+        
+            <p>
+                Phone: <a class="tel">{{resume.get_contact.phone}}</a><br />
+                Email: <a class="email" href="mailto:{{resume.get_contact.email}}">{{resume.get_contact.email}}</a>
+            </p>
+        </div>
+                
+        <div id="objective">
+           
+                {{resume.get_summary.body | linebreaks}}
+            
+        </div>
+        
+        <div class="clear"></div>
+        
+        <dl>
+            <dd class="clear"></dd>
+            
+            <dt><span class="dts">Education</span></dt>
+            
+            <dd >
+            {% for school in resume.get_education %}
+                <h2>{{school.name}}</h2>
+                <p><strong>Major:</strong> {{school.major}}<br />
+                   <!-- <strong>Minor:</strong> Scale Tending</p> -->
+            {% endfor %}
+
+            </dd>
+            
+            <dd class="clear"></dd>
+            
+            <dt>Skills</dt>
+            {% for skill in resume.get_skills %}
+            <dd>
+                <p>{{skill.body}}</p>               
+            </dd>
+            {% endfor %}
+
+            
+            <dd class="clear"></dd>
+            
+            <dt>Experience</dt>
+
+            <dd>
+            {% for job in resume.get_experience %}
+
+                <h2>{{job.company_organization}} <span>{{job.job_title}} - {{job.start_date}} - {{job.end_date}}</span></h2>
+                <ul>
+                    {% for exp in job.get_responsibilities %}
+                        <li>{{exp.body}}</li>
+                    {% endfor %}
+
+                </ul>
+            {% endfor %}
+            </dd>
+            
+            <dd class="clear"></dd>
+            
+            <dt>Certifications</dt>
+            <dd>
+                <ul>
+                    {% for cert in resume.get_certifications %}
+                        <li>{{cert.body}}</li>
+                    {% endfor %}
+
+                </ul>
+            </dd>
+            
+            <dd class="clear"></dd>
+            
+            <dt>References</dt>
+            <dd>Available on request</dd>
+            
+            <dd class="clear"></dd>
+        </dl>
+        
+        <div class="clear"></div>
+    
+    </div>
+    <div id="elementH"></div>
+    {% comment %} <button onclick='generatePDF()'>click html2pdf</button> {% endcomment %}
+
+{% comment %}    
+
+    <script>
+
+        function generatePDF(){
+            var element = document.getElementById('content-to-print');
+            var opt = {
+                margin:       1,
+                filename:     'resume.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2 },
+                jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+              };
+              html2pdf().set(opt).from(element).save();
+            
+        }
+        
+     </script> {% endcomment %}
+</body>
