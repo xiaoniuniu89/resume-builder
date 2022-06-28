@@ -19,6 +19,7 @@ django-wkhtmltopdf==3.4.0
 django2-auth0-auth==4.1.5
 ecdsa==0.17.0
 future==0.18.2
+gunicorn==20.1.0
 html5lib==1.1
 idna==3.3
 iso8601==0.1.12
